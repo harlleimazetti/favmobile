@@ -24,7 +24,48 @@ $(document).on("click", ".tabela_home tr td", function() {
 });
 
 $( document ).on( "pageinit" , "#inicio", function () {
+var data1 = {
+    labels: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul"],
+    datasets: [
+        {
+            label: "My First dataset",
+            fillColor: "rgba(220,220,220,0.5)",
+            strokeColor: "rgba(220,220,220,0.8)",
+            highlightFill: "rgba(220,220,220,0.75)",
+            highlightStroke: "rgba(220,220,220,1)",
+            data: [65, 59, 80, 81, 56, 55, 40]
+        },
+        {
+            label: "My Second dataset",
+            fillColor: "rgba(151,187,205,0.5)",
+            strokeColor: "rgba(151,187,205,0.8)",
+            highlightFill: "rgba(151,187,205,0.75)",
+            highlightStroke: "rgba(151,187,205,1)",
+            data: [28, 48, 40, 19, 86, 27, 90]
+        }
+    ]
+};
+	var options = { responsive : true, animation : false, scaleFontColor: "#fff", scaleLineColor : "rgba(255,255,255,.20)", scaleGridLineColor : "rgba(255,255,255,.20)" }
+	var ctx1 = document.getElementById("myChart1").getContext("2d");
+	var myBarChart = new Chart(ctx1).Bar(data1, options);
+	
+var data2 = [
+    {
+        value: 890,
+        color:"#F7464A",
+        highlight: "#FF5A5E",
+        label: "Red"
+    },
+    {
+        value: 412,
+        color: "#FDB45C",
+        highlight: "#FFC870",
+        label: "Yellow"
+    }
+]
 
+var ctx2 = document.getElementById("myChart2").getContext("2d");
+var myPieChart = new Chart(ctx2).Doughnut(data2,options);
 });
 
 $(document).on('click', '.capturar_imagem', function(event)
@@ -79,6 +120,12 @@ $(document).on( "click" , "#btn_sincronizar", function () {
 });
 
 function sincronizar() {
+	$.mobile.loading( "show", {
+		text: "Atualizando...",
+		textVisible: true,
+		theme: "b",
+		html: ""
+	});
 	get_config(1, function(config) {
 		var url_servidor = config.url_servidor;
 		$.ajax({
@@ -94,6 +141,7 @@ function sincronizar() {
 						console.log(resultado.mensagem);
 					});
 				});
+				$.mobile.loading( "hide" );
 			},
 			error: function (xhr, textStatus, thrownError) {
 				//console.log('textStatus: ' + textStatus + ', thrownError: ' + thrownError);

@@ -45,6 +45,9 @@
 	margin-top: -16px;
 	padding:15px;
 }
+.txt-center {
+	text-align:center;	
+}
 .bg-blue {
 	background-color:#255f8e;	
 }

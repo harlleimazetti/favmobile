@@ -41,7 +41,9 @@
 	<div data-role="page" id="login" data-theme="c">
     	<div data-role="content">
 		<div style="margin-left:auto; margin-right:auto; width:16em; text-align:center; padding-top:30px">
-    		<img src="img/logo.png" width="200">
+			<h1 style="margin:0" class="nome_titular">FRPM<span style="color:#fff; opacity:0.45">Mobile</span></h1>
+			<h3 style="margin:0" class="nome_titular">Fundo de Reabilitação</h3>
+			<h3 style="margin:0" class="nome_titular">Profissional Missionário</h3>
 			<form style="margin-top:20px">
     			<input type="text" data-theme="a" value="" placeholder="E-mail">
 	        	<input type="password" data-theme="a" value="" placeholder="Senha">
@@ -56,7 +58,7 @@
 		<div data-role="panel" data-position="left" data-display="reveal" id="menu-principal" data-theme="b">
 			<ul data-role="listview" class="ui-nodisc-icon ui-alt-icon ui-listview" data-theme="b" data-inset="false">
 				<li data-theme="b"><strong>Menu principal</strong></li>
-				<li><a href="#extrato"><i class="fa fa-list"></i>Saldos e extratos</a></li>
+				<li><a href="#extrato"><i class="fa fa-list"></i>Extrato da conta</a></li>
 				<li><a href="#rendimentos"><i class="fa fa-dollar"></i>Rendimentos</a></li>
 				<li><a href="#analise"><i class="fa fa-bar-chart-o"></i>Análise financeira</a></li>
 				<li><a href="#mensagens"><i class="fa fa-envelope-o"></i>Mensagens</a></li>
@@ -68,7 +70,7 @@
 		</div><!-- /header -->
 		<div data-role="content">
         	<div class="card bg-blue">
-	        	<h2 class="nome_titular white" style="margin:0 !important;">Josimar Oliveira</h2>
+	        	<h2 class="nome_titular white" style="margin:0 !important;">Josimar Ribeiro Cardoso de Oliveira</h2>
     	        <p class="subtitulo_titular white" style="margin:0 !important;">União Missionária Norte</p>
             </div>
         	<table align="center" width="100%" class="tabela_home" cellpadding="0" cellspacing="0">
@@ -76,7 +78,7 @@
                 	<td align="center" data-url="#extrato">
                     	<i class="fa fa-list fa-2x"></i>
 			            <p class="profile_address">
-            				Saldos e extratos
+            				Extrato da conta
             			</p>
                     </td>
                     <td align="center" data-url="#rendimentos">
@@ -100,26 +102,66 @@
             			</p>
 					</td>
                 </tr>
+            	<tr>
+                	<td align="center" data-url="#analise" id="btn_sincronizar">
+                    	<i class="fa fa-refresh fa-2x"></i>
+			            <p class="profile_address">
+            				Atualizar
+            			</p>
+					</td>
+                    <td align="center" data-url="#configuracoes">
+                    	<i class="fa fa-cog fa-2x"></i>
+			            <p class="profile_address">
+            				Configurações
+            			</p>
+					</td>
+                </tr>
             </table>
-            <a href="#" data-role="button" id="btn_sincronizar">Sincronizar</a>
+            
+            <br>
+
+        	<div class="card bg-blue">
+            	<h2 class="nome_titular white txt-center" style="margin:0;">Saldo da conta: <span style="opacity:0.8;">31.155,41</span></h2>
+            </div>
+            
+            <div class="card">
+            	<h2 class="nome_titular txt-center" style="margin-bottom:0">Composição do saldo</h2>
+                <h3 class="nome_titular txt-center" style="margin-top:0; opacity:0.6;">depósitos x rendimentos</h3>
+            	<canvas id="myChart2" height="200" width="330"></canvas>
+            </div>
+            
+            <br>
+            
+        	<div class="card bg-blue">
+            	<h2 class="nome_titular white txt-center">Demonstrativo dos últimos lançamentos</h2>
+            	<canvas id="myChart1" height="200" width="330"></canvas>
+            </div>
+            
 		</div><!-- /content -->
 	</div><!-- /page -->
     
     <div data-role="page" id="extrato" data-theme="a">
 		<div data-role="header" data-position="fixed" data-theme="c">
 			<a href="#" data-rel="back" class="fa fa-chevron-left"></a>
-			<h1>Saldos e extratos</h1>
+			<h1>Extrato da conta</h1>
 		</div><!-- /header -->
     	<div data-role="content" id="content">
-				<ul data-role="listview" data-inset="false" id="lista_lancamentos">
+        	<h2 class="titulo-bloco" style="margin:0">Josimar Ribeiro Cardoso de Oliveira</h1>
+            <p class="profile_texto" style="margin:0">União Missionária Norte</p>
+            <p class="profile_texto" style="margin:0">Número da conta: <strong>001</strong></p>
+            <p class="profile_texto" style="margin:0">Data de abertura: <strong>01/01/2011</strong></p>
+            
+            <a href="#" data-role="button" data-theme="c" data-inline="true" id="btn-atualizar"><i class="fa fa-refresh"></i> Atualizar</a>
+            
+			<ul data-role="listview" data-inset="false" id="lista_lancamentos" style="margin-top:20px !important;">
 
-				</ul>
+			</ul>
 		</div>
     </div>
     
     <!-- ////// MENSAGENS ////// -->
-    <div data-role="page" id="mensagens" data-theme="d">
-		<div data-role="header" data-position="fixed" data-theme="f">
+    <div data-role="page" id="mensagens" data-theme="a">
+		<div data-role="header" data-position="fixed" data-theme="c">
 			<a href="#" data-rel="back" class="fa fa-chevron-left"></a>
 			<h1>Mensagens</h1>
 		</div><!-- /header -->
@@ -215,8 +257,8 @@
 	</div><!-- /page -->
     
     <!-- ////// MENSAGEM VISUALIZAR ////// -->
-    <div data-role="page" id="mensagem_visualizar" data-theme="d">
-		<div data-role="header" data-position="fixed" data-theme="f">
+    <div data-role="page" id="mensagem_visualizar" data-theme="a">
+		<div data-role="header" data-position="fixed" data-theme="c">
 			<a href="#" data-rel="back" class="fa fa-chevron-left"></a>
 			<h1>Mensagem</h1>
 		</div><!-- /header -->
@@ -243,7 +285,7 @@
 			<p class="profile_p">
 				Lorem ipsum dolor sit amet, stet iriure eu his. Per no sint dolore, nobis scriptorem mel id. Probo docendi his ad, pericula theophrastus nam te. Falli iuvaret has ut, usu ei illud nemore. Pro persequeris appellantur ullamcorper ex, duo eu feugait philosophia, epicuri consequat usu id. Option intellegam ut has
 			</p>
-			<a href="#mensagem" data-role="button" data-theme="f">Responder</a>
+			<a href="#mensagem" data-role="button" data-theme="c">Responder</a>
             <a href="#mensagens" data-role="button" data-theme="i">Excluir</a>
 		</div><!-- /content -->
 	</div><!-- /page -->

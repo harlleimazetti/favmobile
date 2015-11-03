@@ -158,6 +158,16 @@ function excluir_lancamentos(id, fn)
 
 $(document).on('pageshow', '#extrato', function()
 {
+	atualizar_extrato();
+});
+
+$(document).on('click', '#btn-atualizar', function()
+{
+	sincronizar();
+	atualizar_extrato();
+});
+
+function atualizar_extrato() {
 	var output = '';
 	$('#lista_lancamentos').empty();
 	sessionStorage.id_conta = 5;
@@ -167,7 +177,6 @@ $(document).on('pageshow', '#extrato', function()
 			output += '<li data-icon="false" id="'+ lancamento[i].id_lancamento + '" data-id="' + lancamento[i].id_lancamento + '"><a href="#"><div class="ui-grid-b"><div class="ui-block-a" style="width:27%;"><p class="profile_texto">' + formata_data(lancamento[i].data) + '</p></div><div class="ui-block-b" style="width:46%;"><p class="profile_texto" style="white-space:normal !important;">' + lancamento[i].descricao + '</p></div><div class="ui-block-b" style="width:27%;"><p class="profile_texto" style="text-align:right">' + lancamento[i].valor + ' ' + lancamento[i].dc + '</p></div></div></a></li>';
 		}
 		$('#lista_lancamentos').append(output).listview('refresh');
-	});
-});
-
+	});	
+}
 ///////// LANÇAMENTOS FIM
