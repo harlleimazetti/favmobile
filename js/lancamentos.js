@@ -172,6 +172,7 @@ function atualizar_extrato() {
 	$('#lista_lancamentos').empty();
 	sessionStorage.id_conta = 5;
 	get_all_lancamentos(function(lancamento) {
+		output += '<li data-icon="false" data-theme="c"><a href="#"><div class="ui-grid-b"><div class="ui-block-a" style="width:27%;"><p class="profile_texto">Data</p></div><div class="ui-block-b" style="width:46%;"><p class="profile_texto" style="white-space:normal !important;">Descrição</p></div><div class="ui-block-b" style="width:27%;"><p class="profile_texto" style="text-align:right">Valor</p></div></div></a></li>';
 		for (var i = 0; i < lancamento.length; i++)
 		{
 			output += '<li data-icon="false" id="'+ lancamento[i].id_lancamento + '" data-id="' + lancamento[i].id_lancamento + '"><a href="#"><div class="ui-grid-b"><div class="ui-block-a" style="width:27%;"><p class="profile_texto">' + formata_data(lancamento[i].data) + '</p></div><div class="ui-block-b" style="width:46%;"><p class="profile_texto" style="white-space:normal !important;">' + lancamento[i].descricao + '</p></div><div class="ui-block-b" style="width:27%;"><p class="profile_texto" style="text-align:right">' + lancamento[i].valor + ' ' + lancamento[i].dc + '</p></div></div></a></li>';
