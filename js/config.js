@@ -11,6 +11,9 @@ function get_config(id, fn)
 				var row = result.rows.item(0);
 				config.id			= row.id;
 				config.url_servidor	= row.url_servidor;
+				config.id_pessoa	= row.id_pessoa;
+				config.nome			= row.nome;
+				config.grupo		= row.grupo;
 				fn(config);
 			}
 		});
@@ -24,13 +27,22 @@ function salvar_config(config, operacao_bd, fn)
 		if (operacao_bd == 'novo')
 		{
 			var sql = "INSERT INTO config (" +
-					"url_servidor " + 
+					"url_servidor, " + 
+					"id_pessoa, " + 
+					"nome, " + 
+					"grupo " + 
 				") VALUES ( " +
-					"'" + config.url_servidor + "' " + 
+					"'" + config.url_servidor + "', " + 
+					"'" + config.id_pessoa + "', " + 
+					"'" + config.nome + "', " + 
+					"'" + config.grupo + "' " + 
 				")";
 		} else {
 			var sql = "UPDATE config SET " +
-						"url_servidor = '" + config.url_servidor + "' " +  
+						"url_servidor = '" + config.url_servidor + "', " +  
+						"id_pessoa = '" + config.id_pessoa + "', " + 
+						"nome = '" + config.nome + "', " + 
+						"grupo = '" + config.grupo + "' " + 
 					" WHERE id = " + config.id;
 		}
 		tx.executeSql(sql);

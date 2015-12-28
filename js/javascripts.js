@@ -8,7 +8,91 @@ function onDeviceReady() {
 	//sincronizar();
 }
 
-var map;
+function sairApp() {
+	navigator.app.exitApp();	
+}
+
+$(document).on('click', '.sair_app', function(event) {
+	sairApp();
+	event.preventDefault();
+});
+
+$( document ).on( "pagebeforeshow" , function(e, data) {
+	get_config(1, function(config) {
+		var id_pessoa = config.id_pessoa;
+		sessionStorage.setItem('id_pessoa', config.id_pessoa);
+		var toPage = data.toPage[0].id;
+		console.log(toPage);
+		if(toPage != "login" && (typeof (id_pessoa) == "undefined" || id_pessoa == null || id_pessoa == 0)) {
+			$(':mobile-pagecontainer').pagecontainer('change', '#login');
+		}
+		$('.nome_titular').html(config.nome);
+		$('.grupo_titular').html(config.grupo);
+	});
+});
+
+$( document ).on( "pageinit" , "#inicio", function () {
+	get_config(1, function(config) {
+		sessionStorage.setItem('id_pessoa', config.id_pessoa);
+		calcula_saldo();
+	});
+});
+
+$( document ).on( "pageinit" , "#analise", function () {
+			var saldo_parcial = JSON.parse(sessionStorage.saldo_parcial);
+			var maximo = 12;
+
+			var options = { responsive : false, animation : false, bezierCurve : false, scaleFontColor: "#fff", scaleLineColor : "rgba(255,255,255,.20)", scaleGridLineColor : "rgba(255,255,255,.20)" }
+
+			var data1 = {
+				labels: saldo_parcial.data.slice(-maximo),
+				datasets: [
+					{
+						label: "Saldo",
+						fillColor: "rgba(220,220,220,0.5)",
+						strokeColor: "rgba(220,220,220,0.8)",
+						highlightFill: "rgba(220,220,220,0.75)",
+						highlightStroke: "rgba(220,220,220,1)",
+						data: saldo_parcial.subtotal.slice(-maximo)
+					}
+				]
+			};
+			var ctx1 = document.getElementById("myChart1").getContext("2d");
+			var myLineChart = new Chart(ctx1).Line(data1, options);
+			
+			var data2 = [
+				{
+					value: saldo_parcial.deposito,
+					color:"#F7464A",
+					highlight: "#FF5A5E",
+					label: "DEPÓSITOS"
+				},
+				{
+					value: saldo_parcial.rendimento,
+					color: "#FDB45C",
+					highlight: "#FFC870",
+					label: "RENDIMENTOS"
+				}
+			]
+			var ctx2 = document.getElementById("myChart2").getContext("2d");
+			var myPieChart = new Chart(ctx2).Doughnut(data2,options);
+			
+			var data3 = {
+				labels: saldo_parcial.data.slice(-maximo),
+				datasets: [
+					{
+						label: "Valor",
+						fillColor: "rgba(220,220,220,0.5)",
+						strokeColor: "rgba(220,220,220,0.8)",
+						highlightFill: "rgba(220,220,220,0.75)",
+						highlightStroke: "rgba(220,220,220,1)",
+						data: saldo_parcial.valor.slice(-maximo)
+					}
+				]
+			};
+			var ctx3 = document.getElementById("myChart3").getContext("2d");
+			var myBarChart = new Chart(ctx3).Bar(data3, options);
+});
 
 $(document).on("touchstart", ".tabela_home tr td", function() {
 	$(this).addClass("ativa");	
@@ -23,100 +107,13 @@ $(document).on("click", ".tabela_home tr td", function() {
 	$( ":mobile-pagecontainer" ).pagecontainer( "change", url );
 });
 
-$( document ).on( "pageinit" , "#inicio", function () {
-var data1 = {
-    labels: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul"],
-    datasets: [
-        {
-            label: "My First dataset",
-            fillColor: "rgba(220,220,220,0.5)",
-            strokeColor: "rgba(220,220,220,0.8)",
-            highlightFill: "rgba(220,220,220,0.75)",
-            highlightStroke: "rgba(220,220,220,1)",
-            data: [65, 59, 80, 81, 56, 55, 40]
-        },
-        {
-            label: "My Second dataset",
-            fillColor: "rgba(151,187,205,0.5)",
-            strokeColor: "rgba(151,187,205,0.8)",
-            highlightFill: "rgba(151,187,205,0.75)",
-            highlightStroke: "rgba(151,187,205,1)",
-            data: [28, 48, 40, 19, 86, 27, 90]
-        }
-    ]
-};
-	var options = { responsive : true, animation : false, scaleFontColor: "#fff", scaleLineColor : "rgba(255,255,255,.20)", scaleGridLineColor : "rgba(255,255,255,.20)" }
-	var ctx1 = document.getElementById("myChart1").getContext("2d");
-	var myBarChart = new Chart(ctx1).Bar(data1, options);
-	
-var data2 = [
-    {
-        value: 890,
-        color:"#F7464A",
-        highlight: "#FF5A5E",
-        label: "Red"
-    },
-    {
-        value: 412,
-        color: "#FDB45C",
-        highlight: "#FFC870",
-        label: "Yellow"
-    }
-]
-
-var ctx2 = document.getElementById("myChart2").getContext("2d");
-var myPieChart = new Chart(ctx2).Doughnut(data2,options);
-});
-
-$(document).on('click', '.capturar_imagem', function(event)
-{
-	event.preventDefault();
-	//sessionStorage.img_uri = $(this).data('img-uri');
-	sessionStorage.img_vis = $(this).data('img-vis');
-	navigator.camera.getPicture(onSuccess, onFail, { quality: 50, 
-	destinationType: Camera.DestinationType.FILE_URI });
-});
-
-function onSuccess(imageURI) {
-    //var image = document.getElementById('visualizacao_imagem');
-    //image.src = imageURI;
-	//var img_uri = '#' + sessionStorage.img_uri;
-	var img_vis = '#' + sessionStorage.img_vis; 
-	$(img_vis, $.mobile.activePage).attr('src', imageURI);
-	//$(img_uri, $.mobile.activePage).val(imageURI);
-}
-
-function onFail(message) {
-    alert('Falha: ' + message);
-}
-
-$(document).on('pageinit', '#reportar', function(event)
-{
-	event.preventDefault();
-	navigator.geolocation.getCurrentPosition(onGPSSuccess, onGPSError, {enableHighAccuracy : true});
-});
-
-var onGPSSuccess = function(position) {
-	var coordenadas = position.coords.latitude + ', ' + position.coords.longitude;
-	$('#coordenadas').val(coordenadas);
-    /*alert('Latitude: '          + position.coords.latitude          + '\n' +
-          'Longitude: '         + position.coords.longitude         + '\n' +
-          'Altitude: '          + position.coords.altitude          + '\n' +
-          'Accuracy: '          + position.coords.accuracy          + '\n' +
-          'Altitude Accuracy: ' + position.coords.altitudeAccuracy  + '\n' +
-          'Heading: '           + position.coords.heading           + '\n' +
-          'Speed: '             + position.coords.speed             + '\n' +
-          'Timestamp: '         + position.timestamp                + '\n');*/
-};
-
-// onError Callback receives a PositionError object
-//
-function onGPSError(error) {
-    alert('Erro: ' + error.code + ', Descrição: ' + error.message);
-}
-
 $(document).on( "click" , "#btn_sincronizar", function () {
 	sincronizar();
+});
+
+$(document).on( "submit" , "#formulario_login", function (event) {
+	registrar();
+	event.preventDefault();
 });
 
 function sincronizar() {
@@ -128,17 +125,26 @@ function sincronizar() {
 	});
 	get_config(1, function(config) {
 		var url_servidor = config.url_servidor;
+		var id_pessoa = config.id_pessoa;
 		$.ajax({
 			url: url_servidor,
-			data: {acao: 'sincronizar', dados : {id_pessoa : 61}},
+			data: {acao: 'sincronizar', dados : {id_pessoa : id_pessoa}},
 			dataType: 'jsonp',
 			jsonp: 'callback',
 			success: function(resultado) {
+				//console.log(resultado);
+				var contas = resultado.pessoas[0].contas;
+				//console.log(contas);
+				$.each(contas, function(key, conta) {
+					atualizar_contas(conta, function(resultado) {
+						//console.log(resultado.mensagem);
+					});
+				});
 				var lancamentos = resultado.pessoas[0].contas[0].lancamentos;
-				console.log(lancamentos);
+				//console.log(lancamentos);
 				$.each(lancamentos, function(key, lancamento) {
 					atualizar_lancamentos(lancamento, function(resultado) {
-						console.log(resultado.mensagem);
+						//console.log(resultado.mensagem);
 					});
 				});
 				$.mobile.loading( "hide" );
@@ -149,4 +155,51 @@ function sincronizar() {
 			}
 		});
 	});
+}
+
+function registrar() {
+	var login = $('#form_login').val();
+	var senha = $('#form_senha').val();
+	if (login == '' || senha == '') {
+		alert('Login ou senha inválidos! Por favor tente novamente.');
+	} else {
+		$.mobile.loading( "show", {
+			text: "Registrando...",
+			textVisible: true,
+			theme: "b",
+			html: ""
+		});
+		get_config(1, function(config) {
+			var url_servidor = config.url_servidor;
+			var id_pessoa = config.id_pessoa;
+			$.ajax({
+				url: url_servidor,
+				data: {acao: 'registrar', dados : {login : login, senha : senha}},
+				dataType: 'jsonp',
+				jsonp: 'callback',
+				success: function(resultado) {
+					console.log(resultado);
+					if (resultado.status == 'ok') {
+						config.id_pessoa	= resultado.pessoas[0].id_pessoa;
+						config.nome			= resultado.pessoas[0].nome;
+						config.grupo		= resultado.pessoas[0].grupo;
+						$('.nome_titular').html(config.nome);
+						$('.grupo_titular').html(config.grupo);
+						salvar_config(config, 'editar', function(resultado) {
+							$.mobile.loading( "hide" );
+							$( ":mobile-pagecontainer" ).pagecontainer( "change", '#inicio' );
+						});
+						$.mobile.loading( "hide" );
+					} else {
+						$.mobile.loading( "hide" );
+						toast(resultado.mensagem);
+					}
+				},
+				error: function (xhr, textStatus, thrownError) {
+					//console.log('textStatus: ' + textStatus + ', thrownError: ' + thrownError);
+					alert('textStatus: ' + textStatus + ', thrownError: ' + thrownError);
+				}
+			});
+		});
+	}
 }

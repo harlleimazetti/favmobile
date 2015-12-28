@@ -156,8 +156,9 @@ function excluir_lancamentos(id, fn)
 
 /////// LANÇAMENTOS LISTA
 
-$(document).on('pageshow', '#extrato', function()
+$(document).on('pagebeforecreate', '#extrato', function()
 {
+	sincronizar();
 	atualizar_extrato();
 });
 
@@ -169,15 +170,68 @@ $(document).on('click', '#btn-atualizar', function()
 
 function atualizar_extrato() {
 	var output = '';
-	$('#lista_lancamentos').empty();
-	sessionStorage.id_conta = 5;
-	get_all_lancamentos(function(lancamento) {
-		output += '<li data-icon="false" data-theme="c"><a href="#"><div class="ui-grid-b"><div class="ui-block-a" style="width:27%;"><p class="profile_texto">Data</p></div><div class="ui-block-b" style="width:46%;"><p class="profile_texto" style="white-space:normal !important;">Descrição</p></div><div class="ui-block-b" style="width:27%;"><p class="profile_texto" style="text-align:right">Valor</p></div></div></a></li>';
-		for (var i = 0; i < lancamento.length; i++)
-		{
-			output += '<li data-icon="false" id="'+ lancamento[i].id_lancamento + '" data-id="' + lancamento[i].id_lancamento + '"><a href="#"><div class="ui-grid-b"><div class="ui-block-a" style="width:27%;"><p class="profile_texto">' + formata_data(lancamento[i].data) + '</p></div><div class="ui-block-b" style="width:46%;"><p class="profile_texto" style="white-space:normal !important;">' + lancamento[i].descricao + '</p></div><div class="ui-block-b" style="width:27%;"><p class="profile_texto" style="text-align:right">' + lancamento[i].valor + ' ' + lancamento[i].dc + '</p></div></div></a></li>';
-		}
-		$('#lista_lancamentos').append(output).listview('refresh');
-	});	
+	get_config(1, function(config) {
+		sessionStorage.id_pessoa = config.id_pessoa;
+		get_contas_pessoa(sessionStorage.id_pessoa, function(conta) {
+			sessionStorage.id_conta = conta.id_conta;
+			$('.conta_numero').html(conta.numero);
+			$('.conta_data_abertura').html(formata_data(conta.data_abertura));
+			$('.conta_saldo_inicial').html(conta.saldo_inicial.format(2, 3, '.', ','));
+			calcula_saldo();
+			get_all_lancamentos(function(lancamento) {
+				output += '<li data-icon="false" data-theme="c"><a href="#"><div class="ui-grid-b"><div class="ui-block-a" style="width:27%;"><p class="profile_texto">Data</p></div><div class="ui-block-b" style="width:46%;"><p class="profile_texto" style="white-space:normal !important;">Descrição</p></div><div class="ui-block-b" style="width:27%;"><p class="profile_texto" style="text-align:right">Valor</p></div></div></a></li>';
+				var ano_anterior = '';
+				for (var i = 0; i < lancamento.length; i++)
+				{
+					var ano = formata_data(lancamento[i].data).slice(-4);
+					if (ano != ano_anterior) {
+						output += '<li data-icon="false" data-role="list-divider">' + ano + '</li>';
+					}
+					output += '<li data-icon="false" id="'+ lancamento[i].id_lancamento + '" data-id="' + lancamento[i].id_lancamento + '"><a href="#"><div class="ui-grid-b"><div class="ui-block-a" style="width:27%;"><p class="profile_texto">' + formata_data(lancamento[i].data) + '</p></div><div class="ui-block-b" style="width:46%;"><p class="profile_texto" style="white-space:normal !important;">' + lancamento[i].descricao + '</p></div><div class="ui-block-b" style="width:27%;"><p class="profile_texto" style="text-align:right">' + lancamento[i].valor.format(2, 3, '.', ',') + ' ' + lancamento[i].dc + '</p></div></div></a></li>';
+					ano_anterior = ano;
+				}
+				var saldo = parseFloat(sessionStorage.saldo).format(2, 3, '.', ',');
+				$('#lista_lancamentos').empty();
+				$('#lista_lancamentos').append(output).listview('refresh');
+				$('.conta_saldo').html(saldo);
+			});
+		});
+	});
+}
+
+function calcula_saldo() {
+	var saldo = 0;
+	get_contas_pessoa(sessionStorage.id_pessoa, function(conta) {
+		sessionStorage.setItem('id_conta', conta.id_conta);
+		saldo = conta.saldo_inicial;
+		get_all_lancamentos(function(lancamento) {
+			var saldo_parcial = new Object();
+			saldo_parcial.data = new Array;
+			saldo_parcial.valor = new Array();
+			saldo_parcial.subtotal = new Array();
+			saldo_parcial.deposito = 0;
+			saldo_parcial.rendimento = 0;
+			for (var i = 0; i < lancamento.length; i++)
+			{
+				if (lancamento[i].dc == 'C') {
+					saldo += lancamento[i].valor;
+					if (lancamento[i].descricao.indexOf('DEPÓSITO') != -1) {
+						saldo_parcial.deposito += lancamento[i].valor;
+					}
+					if (lancamento[i].descricao.indexOf('CORREÇÃO') != -1) {
+						saldo_parcial.rendimento += lancamento[i].valor;
+					}
+				} else {
+					saldo -= lancamento[i].valor;
+				}
+				saldo_parcial.data.push(formata_data(lancamento[i].data));
+				saldo_parcial.valor.push(lancamento[i].valor);
+				saldo_parcial.subtotal.push(saldo);
+			}
+			sessionStorage.saldo = saldo;
+			sessionStorage.setItem('saldo_parcial', JSON.stringify(saldo_parcial));
+			$('.conta_saldo').html(saldo.format(2, 3, '.', ','));
+		});
+	});
 }
 ///////// LANÇAMENTOS FIM

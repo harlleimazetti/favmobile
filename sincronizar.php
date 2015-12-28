@@ -1,12 +1,9 @@
 <?php
 	header("content-type: text/javascript");
 	//header("Content-Type: application/json");
-
-	//$connection = mysql_connect("186.202.152.73","hlcontabil","hlsgc102030");
-	//$db = mysql_select_db("hlcontabil",$connection);
 	
-	$connection = mysql_connect("localhost","root","");
-	$db = mysql_select_db("frpm_backup_28_10_2015",$connection);
+	$connection=mysql_connect("localhost","frpm","uninorte102030");
+	$db = mysql_select_db("frpm",$connection);
 	
 	if (isset($_POST['acao'])) {
 		$acao = $_POST['acao'];
@@ -24,6 +21,10 @@
 	
 	if ($acao == 'sincronizar') {
 		$resultado = sincronizar($dados);
+	}
+	
+	if ($acao == 'registrar') {
+		$resultado = registrar($dados);
 	}
 	
 	if ($callback != '') {
@@ -63,6 +64,43 @@
 				$b++;
 			}
 			$a++;
+		}
+		$resultado['pessoas'] = $pessoas;
+		return $resultado;
+	}
+	
+	function registrar($dados) {
+		mysql_query('SET CHARACTER SET utf8');
+		$resultado = array();
+		$resultado['status'] = '';
+		$resultado['mensagem'] = '';
+		//$resultado['dados'] = $dados;
+		
+		$pessoas = array();
+		
+		if($dados['login'] != '' and $dados['senha'] != '') {
+			$s1 = "	SELECT us.*, pe.nome, pgp.id_grupo AS id_grupo_pessoa, pg.grupo
+					FROM usuarios AS us
+					LEFT JOIN pessoas AS pe ON us.id_pessoa = pe.id_pessoa
+					LEFT JOIN pessoas_grupos_pessoas AS pgp ON pgp.id_pessoa = pe.id_pessoa
+					LEFT JOIN pessoas_grupos AS pg ON pg.id_grupo = pgp.id_grupo
+					WHERE us.login = '" . $dados['login']. "'
+						AND us.senha = '" . $dados['senha'] . "'
+						AND us.ativo = 1
+					LIMIT 1";
+			$q1 = mysql_query($s1);
+			if (mysql_num_rows($q1) > 0) {
+				$r1 = mysql_fetch_assoc($q1);
+				$pessoas[0] = $r1;
+				$resultado['status'] = 'ok';
+				$resultado['mensagem'] = 'Login efetuado com sucesso';
+			} else {
+				$resultado['status'] = 'er';
+				$resultado['mensagem'] = 'Erro no login! Usuário não encontrado.';
+			}
+		} else {
+				$resultado['status'] = 'er';
+				$resultado['mensagem'] = 'Erro no login! Login ou senha inválidos.';
 		}
 		$resultado['pessoas'] = $pessoas;
 		return $resultado;
