@@ -1,4 +1,4 @@
-function get_all_lancamentos(fn) 
+function get_all_lancamentos(fn)
 {
 	var id_conta = sessionStorage.id_conta;
 	db.transaction(function (tx)
@@ -9,11 +9,11 @@ function get_all_lancamentos(fn)
 			if (result.rows.length)
 			{
 				var lancamentos = new Array;
-				for (var i = 0; i < result.rows.length; i++) 
+				for (var i = 0; i < result.rows.length; i++)
 				{
 					var row = result.rows.item(i);
 					lancamentos[i] = new Object();
-					lancamentos[i].id_lancamento	= row.id_lancamento;
+					lancamentos[i].id	= row.id;
 					lancamentos[i].id_conta			= row.id_conta;
 					lancamentos[i].id_tabela		= row.id_tabela;
 					lancamentos[i].data				= row.data;
@@ -31,7 +31,7 @@ function get_lancamentos(id, fn)
 {
 	db.transaction(function (tx)
 	{
-		var sql = "SELECT * FROM lancamentos WHERE id_lancamento = " + id;
+		var sql = "SELECT * FROM lancamentos WHERE id = " + id;
 		tx.executeSql (sql, undefined, function (tx, result)
 		{
 			if (result.rows.length)
@@ -55,14 +55,14 @@ function get_last_lancamentos(fn)
 {
 	db.transaction(function (tx)
 	{
-		var sql = "SELECT * FROM lancamentos ORDER BY id_lancamento DESC LIMIT 1";
+		var sql = "SELECT * FROM lancamentos ORDER BY id DESC LIMIT 1";
 		tx.executeSql (sql, undefined, function (tx, result)
 		{
 			if (result.rows.length)
 			{
 				var lancamentos = new Object();
 				var row = result.rows.item(0);
-				lancamentos.id_lancamento = row.id_lancamento;
+				lancamentos.id = row.id;
 				fn(lancamentos);
 			}
 		});
@@ -76,36 +76,36 @@ function salvar_lancamentos(lancamentos, operacao_bd, fn)
 		if (operacao_bd == 'novo')
 		{
 			var sql = "INSERT INTO lancamentos (" +
-					"id_lancamento, " + 
-					"id_conta, " + 
-					"id_tabela, " + 
-					"data, " + 
-					"descricao, " + 
-					"dc, " + 
-					"valor " +  
+					"id, " +
+					"id_conta, " +
+					"id_tabela, " +
+					"data, " +
+					"descricao, " +
+					"dc, " +
+					"valor " +
 				") VALUES ( " +
-					"'" + lancamentos.id_lancamento + "', " + 
-					"'" + lancamentos.id_conta + "', " + 
-					"'" + lancamentos.id_tabela + "', " + 
-					"'" + formata_data_db(lancamentos.data) + "', " + 
-					"'" + lancamentos.descricao + "', " + 
-					"'" + lancamentos.dc + "', " + 
-					"'" + lancamentos.valor + "' " + 
+					"'" + lancamentos.id + "', " +
+					"'" + lancamentos.id_conta + "', " +
+					"'" + lancamentos.id_tabela + "', " +
+					"'" + formata_data_db(lancamentos.data) + "', " +
+					"'" + lancamentos.descricao + "', " +
+					"'" + lancamentos.dc + "', " +
+					"'" + lancamentos.valor + "' " +
 				")";
 		} else {
 			var sql = "UPDATE lancamentos SET " +
-						"id_conta = '" + lancamentos.id_conta + "', " +  
-						"id_tabela = '" + lancamentos.id_tabela + "', " + 
-						"data = '" + formata_data_db(lancamentos.data) + "', " + 
-						"descricao = '" + lancamentos.descricao + "', " + 
-						"dc = '" + lancamentos.dc + "', " + 
-						"valor = '" + lancamentos.valor + "'" + 
-					" WHERE id_lancamento = " + lancamentos.id_lancamento;
+						"id_conta = '" + lancamentos.id_conta + "', " +
+						"id_tabela = '" + lancamentos.id_tabela + "', " +
+						"data = '" + formata_data_db(lancamentos.data) + "', " +
+						"descricao = '" + lancamentos.descricao + "', " +
+						"dc = '" + lancamentos.dc + "', " +
+						"valor = '" + lancamentos.valor + "'" +
+					" WHERE id_lancamento = " + lancamentos.id;
 		}
 		tx.executeSql(sql);
 		var resultado = new Object();
 		resultado.status = 1;
-		resultado.mensagem = 'Registro salvo com sucesso';	
+		resultado.mensagem = 'Registro salvo com sucesso';
 		fn(resultado);
 	});
 }
@@ -115,26 +115,26 @@ function atualizar_lancamentos(lancamentos, fn)
 	db.transaction(function (tx)
 	{
 		var sql = "INSERT OR REPLACE INTO lancamentos (" +
-					"id_lancamento, " + 
-					"id_conta, " + 
-					"id_tabela, " + 
-					"data, " + 
-					"descricao, " + 
-					"dc, " + 
-					"valor " +  
+					"id, " +
+					"id_conta, " +
+					"id_tabela, " +
+					"data, " +
+					"descricao, " +
+					"dc, " +
+					"valor " +
 				") VALUES ( " +
-					"'" + lancamentos.id_lancamento + "', " + 
-					"'" + lancamentos.id_conta + "', " + 
-					"'" + lancamentos.id_tabela + "', " + 
-					"'" + lancamentos.data + "', " + 
-					"'" + lancamentos.descricao + "', " + 
-					"'" + lancamentos.dc + "', " + 
-					"'" + lancamentos.valor + "' " + 
+					"'" + lancamentos.id + "', " +
+					"'" + lancamentos.id_conta + "', " +
+					"'" + lancamentos.id_tabela + "', " +
+					"'" + lancamentos.data + "', " +
+					"'" + lancamentos.descricao + "', " +
+					"'" + lancamentos.dc + "', " +
+					"'" + lancamentos.valor + "' " +
 				")";
 		tx.executeSql(sql);
 		var resultado = new Object();
 		resultado.status = 1;
-		resultado.mensagem = 'Registro salvo com sucesso';	
+		resultado.mensagem = 'Registro salvo com sucesso';
 		fn(resultado);
 	});
 }
@@ -143,7 +143,7 @@ function excluir_lancamentos(id, fn)
 {
 	db.transaction(function (tx)
 	{
-		var sql = "DELETE FROM lancamentos WHERE id_lancamento = " + id;
+		var sql = "DELETE FROM lancamentos WHERE id = " + id;
 		tx.executeSql (sql, undefined, function (tx, result)
 		{
 			var resultado = new Object();
@@ -187,7 +187,7 @@ function atualizar_extrato() {
 					if (ano != ano_anterior) {
 						output += '<li data-icon="false" data-role="list-divider">' + ano + '</li>';
 					}
-					output += '<li data-icon="false" id="'+ lancamento[i].id_lancamento + '" data-id="' + lancamento[i].id_lancamento + '"><a href="#"><div class="ui-grid-b"><div class="ui-block-a" style="width:27%;"><p class="profile_texto">' + formata_data(lancamento[i].data) + '</p></div><div class="ui-block-b" style="width:46%;"><p class="profile_texto" style="white-space:normal !important;">' + lancamento[i].descricao + '</p></div><div class="ui-block-b" style="width:27%;"><p class="profile_texto" style="text-align:right">' + lancamento[i].valor.format(2, 3, '.', ',') + ' ' + lancamento[i].dc + '</p></div></div></a></li>';
+					output += '<li data-icon="false" id="'+ lancamento[i].id + '" data-id="' + lancamento[i].id + '"><a href="#"><div class="ui-grid-b"><div class="ui-block-a" style="width:27%;"><p class="profile_texto">' + formata_data(lancamento[i].data) + '</p></div><div class="ui-block-b" style="width:46%;"><p class="profile_texto" style="white-space:normal !important;">' + lancamento[i].descricao + '</p></div><div class="ui-block-b" style="width:27%;"><p class="profile_texto" style="text-align:right">' + lancamento[i].valor.format(2, 3, '.', ',') + ' ' + lancamento[i].dc + '</p></div></div></a></li>';
 					ano_anterior = ano;
 				}
 				var saldo = parseFloat(sessionStorage.saldo).format(2, 3, '.', ',');
@@ -202,7 +202,7 @@ function atualizar_extrato() {
 function calcula_saldo() {
 	var saldo = 0;
 	get_contas_pessoa(sessionStorage.id_pessoa, function(conta) {
-		sessionStorage.setItem('id_conta', conta.id_conta);
+		sessionStorage.setItem('id_conta', conta.id);
 		saldo = conta.saldo_inicial;
 		get_all_lancamentos(function(lancamento) {
 			var saldo_parcial = new Object();
