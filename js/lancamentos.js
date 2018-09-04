@@ -1,6 +1,8 @@
 function get_all_lancamentos(fn)
 {
 	var id_conta = sessionStorage.id_conta;
+	console.log('get_all');
+	console.log(id_conta);
 	db.transaction(function (tx)
 	{
 		var sql = "SELECT * FROM lancamentos WHERE id_conta = '" + id_conta + "' ORDER BY data, id";
@@ -173,12 +175,15 @@ function atualizar_extrato() {
 	get_config(1, function(config) {
 		sessionStorage.id_pessoa = config.id_pessoa;
 		get_contas_pessoa(sessionStorage.id_pessoa, function(conta) {
-			sessionStorage.id_conta = conta.id_conta;
+			sessionStorage.id_conta = conta.id;
 			$('.conta_numero').html(conta.numero);
 			$('.conta_data_abertura').html(formata_data(conta.data_abertura));
 			$('.conta_saldo_inicial').html(conta.saldo_inicial.format(2, 3, '.', ','));
-			calcula_saldo();
+			//calcula_saldo();
+			console.log('teste');
 			get_all_lancamentos(function(lancamento) {
+				console.log('gio');
+				console.log(lancamento);
 				output += '<li data-icon="false" data-theme="c"><a href="#"><div class="ui-grid-b"><div class="ui-block-a" style="width:27%;"><p class="profile_texto">Data</p></div><div class="ui-block-b" style="width:46%;"><p class="profile_texto" style="white-space:normal !important;">Descrição</p></div><div class="ui-block-b" style="width:27%;"><p class="profile_texto" style="text-align:right">Valor</p></div></div></a></li>';
 				var ano_anterior = '';
 				for (var i = 0; i < lancamento.length; i++)
