@@ -38,7 +38,7 @@ function get_lancamentos(id, fn)
 			{
 				var lancamentos = new Object();
 				var row = result.rows.item(0);
-				lancamentos.id_lancamento	= row.id_lancamento;
+				lancamentos.id	= row.id;
 				lancamentos.id_conta		= row.id_conta;
 				lancamentos.id_tabela		= row.id_tabela;
 				lancamentos.data			= row.data;
