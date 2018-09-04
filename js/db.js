@@ -24,7 +24,7 @@ db.transaction (function (transaction)
 	//transaction.executeSql (sql, undefined, function() { }, error);
 
 	var sql = "CREATE TABLE IF NOT EXISTS pessoas " +
-		" (id_pessoa INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
+		" (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
 		"id_grupo INTEGER, " +
 		"id_tipo INTEGER, " +
 		"id_cargo INTEGER, " +
@@ -53,7 +53,7 @@ db.transaction (function (transaction)
 	//transaction.executeSql (sql, undefined, function() { }, error);
 
 	var sql = "CREATE TABLE IF NOT EXISTS contas " +
-		" (id_conta INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
+		" (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
 		"id_pessoa INTEGER, " +
 		"numero VARCHAR(30), " +
 		"data_abertura DATE, " +
@@ -67,7 +67,7 @@ db.transaction (function (transaction)
 	//transaction.executeSql (sql, undefined, function() { }, error);
 
 	var sql = "CREATE TABLE IF NOT EXISTS lancamentos " +
-		" (id_lancamento INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
+		" (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
 		"id_conta INTEGER, " +
 		"id_tabela INTEGER, " +
 		"data DATE, " +
