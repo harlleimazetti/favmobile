@@ -26,24 +26,23 @@ db.transaction (function (transaction)
 	var sql = "CREATE TABLE IF NOT EXISTS pessoas " +
 		" (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
 		"id_grupo INTEGER, " +
-		"id_tipo INTEGER, " +
-		"id_cargo INTEGER, " +
-		"id_funcao INTEGER, " +
-		"id_departamento INTEGER, " +
-		"id_estado_lotacao INTEGER, " +
 		"ativo VARCHAR(1), " +
 		"acesso VARCHAR(1), " +
 		"nome VARCHAR(100), " +
 		"nascimento DATE, " +
-		"razao_social VARCHAR(100), " +
-		"nome_fantasia VARCHAR(100), " +
-		"cnpj VARCHAR(15), " +
-		"inscricao VARCHAR(20), " +
 		"cpf VARCHAR(15), " +
 		"admissao DATE, " +
 		"tempo_servico VARCHAR(2), " +
 		"ci VARCHAR(30), " +
-		"site VARCHAR(100), " +
+		"ci_emissao DATE, " +
+		"logradouro VARCHAR(200), " +
+		"numero VARCHAR(10), " +
+		"complemento VARCHAR(50), " +
+		"cidade VARCHAR(50), " +
+		"uf VARCHAR(2), " +
+		"telefone_celular VARCHAR(16), " +
+		"telefone_fixo VARCHAR(16), " +
+		"telefone_recado VARCHAR(16), " +
 		"obs TEXT " +
 		")";
 	transaction.executeSql (sql, undefined, function() { }, error);
