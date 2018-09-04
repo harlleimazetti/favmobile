@@ -3,7 +3,7 @@ function get_all_lancamentos(fn)
 	var id_conta = sessionStorage.id_conta;
 	db.transaction(function (tx)
 	{
-		var sql = "SELECT * FROM lancamentos WHERE id_conta = '" + id_conta + "' ORDER BY data, id_lancamento";
+		var sql = "SELECT * FROM lancamentos WHERE id_conta = '" + id_conta + "' ORDER BY data, id";
 		tx.executeSql (sql, undefined, function (tx, result)
 		{
 			if (result.rows.length)
@@ -100,7 +100,7 @@ function salvar_lancamentos(lancamentos, operacao_bd, fn)
 						"descricao = '" + lancamentos.descricao + "', " +
 						"dc = '" + lancamentos.dc + "', " +
 						"valor = '" + lancamentos.valor + "'" +
-					" WHERE id_lancamento = " + lancamentos.id;
+					" WHERE id = " + lancamentos.id;
 		}
 		tx.executeSql(sql);
 		var resultado = new Object();
