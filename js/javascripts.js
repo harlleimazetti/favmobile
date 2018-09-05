@@ -128,6 +128,7 @@ function sincronizar() {
 		var id_pessoa = config.id_pessoa;
 		$.ajax({
 			url: url_servidor,
+			cache: false,
 			data: {acao: 'sincronizar', dados : {id_pessoa : id_pessoa}},
 			dataType: 'jsonp',
 			jsonp: 'callback',
