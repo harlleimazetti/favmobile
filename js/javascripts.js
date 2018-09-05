@@ -1,4 +1,4 @@
-document.addEventListener("deviceready", onDeviceReady, false); 
+document.addEventListener("deviceready", onDeviceReady, false);
 function onDeviceReady() {
 	$.mobile.defaultPageTransition = 'none';
 	$.mobile.defaultDialogTransition = 'none';
@@ -9,7 +9,7 @@ function onDeviceReady() {
 }
 
 function sairApp() {
-	navigator.app.exitApp();	
+	navigator.app.exitApp();
 }
 
 $(document).on('click', '.sair_app', function(event) {
@@ -59,7 +59,7 @@ $( document ).on( "pageinit" , "#analise", function () {
 			};
 			var ctx1 = document.getElementById("myChart1").getContext("2d");
 			var myLineChart = new Chart(ctx1).Line(data1, options);
-			
+
 			var data2 = [
 				{
 					value: saldo_parcial.deposito,
@@ -76,7 +76,7 @@ $( document ).on( "pageinit" , "#analise", function () {
 			]
 			var ctx2 = document.getElementById("myChart2").getContext("2d");
 			var myPieChart = new Chart(ctx2).Doughnut(data2,options);
-			
+
 			var data3 = {
 				labels: saldo_parcial.data.slice(-maximo),
 				datasets: [
@@ -95,11 +95,11 @@ $( document ).on( "pageinit" , "#analise", function () {
 });
 
 $(document).on("touchstart", ".tabela_home tr td", function() {
-	$(this).addClass("ativa");	
+	$(this).addClass("ativa");
 });
 
 $(document).on("touchend", ".tabela_home tr td", function() {
-	$(this).removeClass("ativa");	
+	$(this).removeClass("ativa");
 });
 
 $(document).on("click", ".tabela_home tr td", function() {
@@ -174,6 +174,7 @@ function registrar() {
 			var id_pessoa = config.id_pessoa;
 			$.ajax({
 				url: url_servidor,
+				cache: false,
 				data: {acao: 'registrar', dados : {login : login, senha : senha}},
 				dataType: 'jsonp',
 				jsonp: 'callback',
