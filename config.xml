@@ -31,8 +31,16 @@
     <preference name="fullscreen"       value="false" />
     <preference name="webviewbounce"    value="false" />
 
+    <plugin name="cordova-plugin-whitelist" source="npm"/>
+
+    <allow-navigation href="*://*.fav-uninorte.com.br/*" />
+    <allow-navigation href="*://*.fav-unisul.com.br/*" />
+
+    <allow-intent href="*://*.fav-uninorte.com.br/*" />
+    <allow-intent href="*://*.fav-unisul.com.br/*" />
+
     <access origin="*" subdomains="true" />
 
     <icon src="icon.png" />
-    
+
 </widget>
