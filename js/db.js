@@ -16,7 +16,7 @@ db.transaction (function (transaction)
 	transaction.executeSql (sql, undefined, function() { }, error);
 	//console.log(sql);
 
-	var sql = "INSERT OR IGNORE INTO config (id, url_servidor) VALUES ('1', 'http://www.fav-uninorte.com.br/favmobile/sincronizar.php') ";
+	var sql = "INSERT OR IGNORE INTO config (id, url_servidor) VALUES ('1', 'http://www.fav-unisul.com.br/favmobile/sincronizar.php') ";
 	transaction.executeSql (sql, undefined, function() { }, error);
 	//console.log(sql);
 
