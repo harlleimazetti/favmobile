@@ -96,16 +96,19 @@
 	<div data-role="page" id="login" data-theme="c">
     	<div data-role="content">
 		<div style="margin-left:auto; margin-right:auto; width:16em; text-align:center; padding-top:30px">
-        	<img src="img/logo.png" width="160">
+        	<img src="img/logo.png" width="120">
 			<h1 style="margin:0" class="titulo-bloco">FAV<span style="color:#fff; opacity:0.45">Mobile</span></h1>
 			<h3 style="margin:0" class="titulo-bloco">Fundo de Auxílio ao Vocacionado</h3>
-			<h3 style="margin:0" class="titulo-bloco">Unisul</h3>
 			<form style="margin-top:20px" name="formulario_login" id="formulario_login" method="post">
     			<input type="text" data-theme="a" value="" placeholder="Login" name="form_login" id="form_login">
 	        	<input type="password" data-theme="a" value="" placeholder="Senha" name="form_senha" id="form_senha">
+						<select id="regiao" name="regiao">
+							<option value="uninorte">União Norte</option>
+							<option value="unisul">União Sul</option>
+						</select>
 		        <button data-theme="c" class="ui-btn-active" id="btn_registrar" type="submit">Registrar</button>
     		</form>
-            <p class="profile_texto">Para o primeiro acesso é necessário estar conectado à Internet</p>
+            <p class="profile_texto">Para o primeiro acesso é necessário <br/>estar conectado à Internet</p>
 		</div>
         </div>
 	</div>
