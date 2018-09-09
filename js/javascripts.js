@@ -116,6 +116,22 @@ $(document).on( "submit" , "#formulario_login", function (event) {
 	event.preventDefault();
 });
 
+$(document).on( "change" , "#regiao", function (event) {
+	var regiao = $(this).find('option:selected');
+	var regiao_selecionada = regiao.val();
+	get_config(1, function(config) {
+		if (regiao_selecionada == 'uninorte') {
+				config.url_servidor	= 'http://www.fav-uninorte.com.br/favmobile/sincronizar.php';
+		} else if (regiao_selecionada == 'unisul') {
+			config.url_servidor	= 'http://www.fav-unisul.com.br/favmobile/sincronizar.php';
+		}
+		salvar_config(config, 'editar', function(resultado) {
+
+		});
+	});
+	event.preventDefault();
+});
+
 function sincronizar() {
 	$.mobile.loading( "show", {
 		text: "Atualizando...",
