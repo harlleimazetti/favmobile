@@ -18,6 +18,16 @@
     font-weight: normal;
     font-style: normal;
 }
+@font-face {
+    font-family: 'roboto_regular';
+    src: url('fontes/roboto/Roboto-Regular.eot');
+    src: url('fontes/roboto/Roboto-Regular.eot?#iefix') format('embedded-opentype'),
+         url('fontes/roboto/Roboto-Regular.woff') format('woff'),
+         url('fontes/roboto/Roboto-Regular.ttf') format('truetype'),
+         url('fontes/roboto/Roboto-Regular.svg#roboto_regular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
 .star_green {
 	color:#4CAF50;
 }
@@ -34,10 +44,10 @@
 	margin-left: -20px !important;
 }
 .icone_proximas_coletas {
-	color:#999;	
+	color:#999;
 }
 .flip_proximas_coletas {
-	right: 0.5em !important;	
+	right: 0.5em !important;
 }
 .card {
 	margin-left: -16px;
@@ -46,10 +56,10 @@
 	padding:15px;
 }
 .txt-center {
-	text-align:center;	
+	text-align:center;
 }
 .bg-blue {
-	background-color:#255f8e;	
+	background-color:#255f8e;
 }
 .bg-dark {
 	background-color:#414141;
@@ -58,10 +68,10 @@
 	color: #fff;
 }
 .bloco {
-	padding:15px;	
+	padding:15px;
 }
 .titulo-bloco {
-	font-family:pt_sans_narrowbold;
+	font-family:pt_sans_narrow;
 }
 .pontos_descarte_lista .distancia {
 	padding:0;
@@ -74,12 +84,12 @@
     top : 40px !important;
     right : 0;
     bottom : 1px !important;
-    left : 0 !important;	
+    left : 0 !important;
 }
 #pontos_descarte #map-canvas {
 	width: 100%;
 	height: 70%;
-	padding: 0; 
+	padding: 0;
 }
 #rastrear_coleta #content-rastrear {
     padding: 0;
@@ -87,12 +97,12 @@
     top : 40px !important;
     right : 0;
     bottom : 1px !important;
-    left : 0 !important;	
+    left : 0 !important;
 }
 #rastrear_coleta #map-canvas-rastrear {
 	width: 100%;
 	height: 70%;
-	padding: 0; 
+	padding: 0;
 }
 #menu-principal li a .fa {
 	width:16px;
@@ -118,7 +128,7 @@
    box-shadow:0 0 1px #333;
 }
 .tabela_home {
-	margin-top:20px;	
+	margin-top:20px;
 }
 .tabela_home tr td {
 	border-left:1px solid #ddd;
@@ -135,10 +145,10 @@
 	text-shadow:#222;
 }
 .tabela_home tr td:first-child {
-	border-left:none;	
+	border-left:none;
 }
 .tabela_home tr:last-child td {
-	border-bottom:none;	
+	border-bottom:none;
 }
 .profile_logo {
 	margin-left:auto;
@@ -183,21 +193,21 @@
 	padding-top:0 !important;
 	margin-bottom:0 !important;
 	padding-bottom:0 !important;
-	font-family:pt_sans_narrow;
-	font-size:18px !important;
+	font-family:roboto_regular;
+	font-size:14px !important;
 }
 .profile_titulo {
-	font-family:pt_sans_narrowbold;
+	font-family:roboto_regular;
 	text-align:center;
 	color:#555;
 }
 .profile_address {
-	font-family:pt_sans_narrowbold;
+	font-family:roboto_regular;
 	text-align:center;
 	color:#555;
 }
 .profile_p {
-	font-family:pt_sans_narrow;
+	font-family:roboto_regular;
 	text-align:justify;
 	color:#555;
 }
@@ -208,7 +218,7 @@
 	margin-bottom:0;
 }
 .profile_img img {
-	width:120%;	
+	width:120%;
 }
 .nome_titular {
 	font-family:pt_sans_narrow;
@@ -216,7 +226,7 @@
 	text-decoration:none !important;
 }
 .subtitulo_titular {
-	font-family:pt_sans_narrow;
+	font-family:roboto_regular;
 	text-shadow:none !important;
 	text-decoration:none !important;
 }
